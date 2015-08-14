@@ -1,5 +1,5 @@
 //
-// anmath.h
+// anmat.h
 //
 // Andrew Keesler
 //
