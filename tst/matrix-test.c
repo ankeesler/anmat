@@ -108,9 +108,16 @@ static int elemOpTest(void)
   expectEquals(ANMAT_MatrixAlloc(&matrixC, 4, 4), ANMAT_SUCCESS);
   expectEquals(ANMAT_MatrixAlloc(&matrixD, 4, 3), ANMAT_SUCCESS);
 
-  // Can't add with wrong dimensions.
+  // Can't do things with wrong dimensions.
+  expect(!ANMAT_MatrixEquals(&matrixA, &matrixC));
+  expect(!ANMAT_MatrixEquals(&matrixA, &matrixD));
   expectEquals(ANMAT_MatrixAdd(&matrixA, &matrixC, &matrixE), ANMAT_BAD_ARG);
   expectEquals(ANMAT_MatrixAdd(&matrixA, &matrixD, &matrixE), ANMAT_BAD_ARG);
+  expectEquals(ANMAT_MatrixSubtract(&matrixA, &matrixC, &matrixE), ANMAT_BAD_ARG);
+  expectEquals(ANMAT_MatrixSubtract(&matrixA, &matrixD, &matrixE), ANMAT_BAD_ARG);
+
+  // Matrices should be equal coming out of the gate (all 0's).
+  expect(ANMAT_MatrixEquals(&matrixA, &matrixB));
 
   // Adding works as it should.
   ANMAT_MatrixData(&matrixA, 0, 1) = 1;
@@ -119,10 +126,21 @@ static int elemOpTest(void)
   ANMAT_MatrixData(&matrixB, 2, 2) = 3;
   expectEquals(ANMAT_MatrixAlloc(&matrixE, 3, 4), ANMAT_SUCCESS);
   expectEquals(ANMAT_MatrixAdd(&matrixA, &matrixB, &matrixE), ANMAT_SUCCESS);
-  expectEquals(ANMAT_MatrixData(&matrixE, 1, 1), 0);
-  expectEquals(ANMAT_MatrixData(&matrixE, 0, 1), 1);
-  expectEquals(ANMAT_MatrixData(&matrixE, 1, 0), 2);
-  expectEquals(ANMAT_MatrixData(&matrixE, 2, 2), 6);
+  expect(ANMAT_MatrixData(&matrixE, 1, 1) == 0);
+  expect(ANMAT_MatrixData(&matrixE, 0, 1) == 1);
+  expect(ANMAT_MatrixData(&matrixE, 1, 0) == 2);
+  expect(ANMAT_MatrixData(&matrixE, 2, 2) == 6);
+
+  // Subtraction works as it should.
+  ANMAT_MatrixData(&matrixA, 0, 1) = 1;
+  ANMAT_MatrixData(&matrixB, 1, 0) = 2;
+  ANMAT_MatrixData(&matrixA, 2, 2) = 5;
+  ANMAT_MatrixData(&matrixB, 2, 2) = 3;
+  expectEquals(ANMAT_MatrixSubtract(&matrixA, &matrixB, &matrixE), ANMAT_SUCCESS);
+  expect(ANMAT_MatrixData(&matrixE, 1, 1) == 0);
+  expect(ANMAT_MatrixData(&matrixE, 0, 1) == 1);
+  expect(ANMAT_MatrixData(&matrixE, 1, 0) == -2);
+  expect(ANMAT_MatrixData(&matrixE, 2, 2) == 2);
 
   // Free.
   ANMAT_MatrixFree(&matrixA);

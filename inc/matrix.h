@@ -11,8 +11,9 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #include "anmat.h"
 
@@ -53,11 +54,21 @@ void ANMAT_MatrixFree(struct ANMAT_Matrix_t *matrix);
 // -----------------------------------------------------------------------------
 // Elementary operations
 
-// Add matrix A and matrix B and put the result inside matrixC.
+// Returns true iff matrixA is equal to matrixB.
+bool ANMAT_MatrixEquals(struct ANMAT_Matrix_t *matrixA,
+                        struct ANMAT_Matrix_t *matrixB);
+
+// Add matrixA and matrixB and put the result inside matrixC.
 // The matrixC must already be allocated.
 enum ANMAT_Status_t ANMAT_MatrixAdd(struct ANMAT_Matrix_t *matrixA,
                                     struct ANMAT_Matrix_t *matrixB,
                                     struct ANMAT_Matrix_t *matrixC);
+
+// Subtract matrixB from matrixA and put the result inside matrixC.
+// The matrixC must already be allocated.
+enum ANMAT_Status_t ANMAT_MatrixSubtract(struct ANMAT_Matrix_t *matrixA,
+                                         struct ANMAT_Matrix_t *matrixB,
+                                         struct ANMAT_Matrix_t *matrixC);
 
 // -----------------------------------------------------------------------------
 // I/O
