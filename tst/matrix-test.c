@@ -115,6 +115,7 @@ static int elemOpTest(void)
   expectEquals(ANMAT_MatrixAdd(&matrixA, &matrixD, &matrixE), ANMAT_BAD_ARG);
   expectEquals(ANMAT_MatrixSubtract(&matrixA, &matrixC, &matrixE), ANMAT_BAD_ARG);
   expectEquals(ANMAT_MatrixSubtract(&matrixA, &matrixD, &matrixE), ANMAT_BAD_ARG);
+  expectEquals(ANMAT_MatrixMultiply(&matrixA, &matrixB, &matrixE), ANMAT_BAD_ARG);
 
   // Matrices should be equal coming out of the gate (all 0's).
   expect(ANMAT_MatrixEquals(&matrixA, &matrixB));
@@ -142,12 +143,75 @@ static int elemOpTest(void)
   expect(ANMAT_MatrixData(&matrixE, 1, 0) == -2);
   expect(ANMAT_MatrixData(&matrixE, 2, 2) == 2);
 
+  // Multiplication works as it should.
+  ANMAT_MatrixData(&matrixA, 0, 0) = 1;
+  ANMAT_MatrixData(&matrixA, 0, 1) = -1;
+  ANMAT_MatrixData(&matrixA, 0, 2) = 0;
+  ANMAT_MatrixData(&matrixA, 2, 0) = 0;
+  ANMAT_MatrixData(&matrixA, 2, 1) = 1;
+  ANMAT_MatrixData(&matrixA, 2, 2) = -1;
+  ANMAT_MatrixData(&matrixC, 0, 0) = 2;
+  ANMAT_MatrixData(&matrixC, 1, 0) = 3;
+  ANMAT_MatrixData(&matrixC, 2, 0) = 4;
+  ANMAT_MatrixData(&matrixC, 0, 2) = 5;
+  ANMAT_MatrixData(&matrixC, 1, 2) = 6;
+  ANMAT_MatrixData(&matrixC, 2, 2) = 7;
+  expectEquals(ANMAT_MatrixMultiply(&matrixA, &matrixC, &matrixE), ANMAT_SUCCESS);
+  expect(ANMAT_MatrixData(&matrixE, 0, 0) == -1);
+  expect(ANMAT_MatrixData(&matrixE, 0, 2) == -1);
+  expect(ANMAT_MatrixData(&matrixE, 2, 0) == -1);
+  expect(ANMAT_MatrixData(&matrixE, 2, 2) == -1);
+
   // Free.
   ANMAT_MatrixFree(&matrixA);
   ANMAT_MatrixFree(&matrixB);
   ANMAT_MatrixFree(&matrixC);
   ANMAT_MatrixFree(&matrixD);
   ANMAT_MatrixFree(&matrixE);
+
+  // Heap should be full.
+  expectHeapFull();
+
+  return 0;
+}
+
+static int transposeTest(void)
+{
+  struct ANMAT_Matrix_t matrixA, matrixB, matrixC, matrixD;
+
+  // Heap should be full.
+  expectHeapFull();
+
+  // Alloc.
+  expectEquals(ANMAT_MatrixAlloc(&matrixA, 2, 3), ANMAT_SUCCESS);
+  expectEquals(ANMAT_MatrixAlloc(&matrixB, 3, 2), ANMAT_SUCCESS);
+  expectEquals(ANMAT_MatrixAlloc(&matrixC, 2, 2), ANMAT_SUCCESS);
+  expectEquals(ANMAT_MatrixAlloc(&matrixD, 3, 3), ANMAT_SUCCESS);
+
+  // Can't transpose with bad dimensions.
+  expectEquals(ANMAT_MatrixTranspose(&matrixA, &matrixC), ANMAT_BAD_ARG);
+  expectEquals(ANMAT_MatrixTranspose(&matrixA, &matrixD), ANMAT_BAD_ARG);
+
+  // Transposition works as expected.
+  ANMAT_MatrixData(&matrixA, 0, 0) = 1;
+  ANMAT_MatrixData(&matrixA, 0, 1) = 2;
+  ANMAT_MatrixData(&matrixA, 0, 2) = 3;
+  ANMAT_MatrixData(&matrixA, 1, 0) = 4;
+  ANMAT_MatrixData(&matrixA, 1, 1) = 5;
+  ANMAT_MatrixData(&matrixA, 1, 2) = 6;
+  expectEquals(ANMAT_MatrixTranspose(&matrixA, &matrixB), ANMAT_SUCCESS);
+  expect(ANMAT_MatrixData(&matrixB, 0, 0) == 1);
+  expect(ANMAT_MatrixData(&matrixB, 0, 1) == 4);
+  expect(ANMAT_MatrixData(&matrixB, 1, 0) == 2);
+  expect(ANMAT_MatrixData(&matrixB, 1, 1) == 5);
+  expect(ANMAT_MatrixData(&matrixB, 2, 0) == 3);
+  expect(ANMAT_MatrixData(&matrixB, 2, 1) == 6);
+
+  // Free.
+  ANMAT_MatrixFree(&matrixA);
+  ANMAT_MatrixFree(&matrixB);
+  ANMAT_MatrixFree(&matrixC);
+  ANMAT_MatrixFree(&matrixD);
 
   // Heap should be full.
   expectHeapFull();
@@ -162,6 +226,7 @@ int main(void)
   run(allocTest);
   run(dataTest);
   run(elemOpTest);
+  run(transposeTest);
 
   return 0;
 }

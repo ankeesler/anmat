@@ -29,6 +29,17 @@
 #define dimensionsAreEqual(matrixA, matrixB)                                 \
   ((matrixA)->rows == (matrixB)->rows && (matrixA)->cols == (matrixB)->cols)
 
+static inline double dotProduct(double *u, double *v, uint32_t length)
+{
+  double total = 0;
+
+  while (length--) {
+    total += u[length] * v[length];
+  }
+
+  return total;
+}
+
 // -----------------------------------------------------------------------------
 // Memory Management
 
@@ -144,6 +155,57 @@ enum ANMAT_Status_t ANMAT_MatrixSubtract(struct ANMAT_Matrix_t *matrixA,
                                          struct ANMAT_Matrix_t *matrixC)
 {
   return addOrSubtractMatrices(matrixA, matrixB, matrixC, false); // add?
+}
+
+enum ANMAT_Status_t ANMAT_MatrixMultiply(struct ANMAT_Matrix_t *matrixA,
+                                         struct ANMAT_Matrix_t *matrixB,
+                                         struct ANMAT_Matrix_t *matrixC)
+{
+  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  struct ANMAT_Matrix_t matrixBT;
+  uint32_t rowI, colI;
+
+  if (matrixA->cols == matrixB->rows
+      && matrixC->rows == matrixA->rows
+      && matrixC->cols == matrixB->cols) {
+    status = ANMAT_MatrixAlloc(&matrixBT, matrixB->cols, matrixB->rows);
+    if (status == ANMAT_SUCCESS) {
+      status = ANMAT_MatrixTranspose(matrixB, &matrixBT);
+      if (status == ANMAT_SUCCESS) {
+        FOR_ROW(matrixC, rowI) {
+          FOR_COL(matrixC, colI) {
+            matrixC->data[rowI][colI] = dotProduct(matrixA->data[rowI],
+                                                   matrixBT.data[rowI],
+                                                   matrixA->rows);
+          }
+        }
+      }
+      ANMAT_MatrixFree(&matrixBT);
+    }
+  }
+
+  return status;
+}
+
+// -----------------------------------------------------------------------------
+// Matrix Operations
+
+enum ANMAT_Status_t ANMAT_MatrixTranspose(struct ANMAT_Matrix_t *matrixA,
+                                          struct ANMAT_Matrix_t *matrixB)
+{
+  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  uint32_t rowI, colI;
+
+  if (matrixA->rows == matrixB->cols && matrixA->cols == matrixB->rows) {
+    status = ANMAT_SUCCESS;
+    FOR_ROW(matrixA, rowI) {
+      FOR_COL(matrixA, colI) {
+        matrixB->data[colI][rowI] = matrixA->data[rowI][colI];
+      }
+    }
+  }
+
+  return status;
 }
 
 // -----------------------------------------------------------------------------

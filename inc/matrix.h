@@ -70,6 +70,20 @@ enum ANMAT_Status_t ANMAT_MatrixSubtract(struct ANMAT_Matrix_t *matrixA,
                                          struct ANMAT_Matrix_t *matrixB,
                                          struct ANMAT_Matrix_t *matrixC);
 
+// Multiply matrixA by matrixB and put the result inside matrixC.
+// The matrixC must already be allocated.
+enum ANMAT_Status_t ANMAT_MatrixMultiply(struct ANMAT_Matrix_t *matrixA,
+                                         struct ANMAT_Matrix_t *matrixB,
+                                         struct ANMAT_Matrix_t *matrixC);
+
+// -----------------------------------------------------------------------------
+// Matrix Operations
+
+// Build the transpose of matrixA in matrixB.
+// The matrixB must already be allocated.
+enum ANMAT_Status_t ANMAT_MatrixTranspose(struct ANMAT_Matrix_t *matrixA,
+                                          struct ANMAT_Matrix_t *matrixB);
+
 // -----------------------------------------------------------------------------
 // I/O
 
