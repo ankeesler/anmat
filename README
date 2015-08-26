@@ -1,1 +1,6 @@
 Math is cool.
+
+Each public module has:
+  - a source file found in src/<module>.c
+  - an API header file found in inc/<module>.h
+  - a unit test found in tst/<module>-test.c
