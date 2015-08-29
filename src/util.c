@@ -29,5 +29,5 @@ inline bool ANMAT_UtilNeighborhood(const double a,
                                    const double b,
                                    const double epsilon)
 {
-  return (ANMAT_UtilAbs(a - b) < epsilon);
+  return (ANMAT_UtilAbs(a - b) <= epsilon);
 }

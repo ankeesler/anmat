@@ -40,6 +40,7 @@ clean:
 TESTS=       \
     heap     \
     matrix   \
+    util     \
 
 test: $(patsubst %, run-%-test, $(TESTS))
 
@@ -53,4 +54,10 @@ MATRIX_TST_SRC=$(SRC_DIR)/matrix.c $(COMMON_FILES) $(TST_DIR)/matrix-test.c
 $(BUILD_DIR)/matrix-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(MATRIX_TST_SRC)))
 	$(CC) -lmcgoo -o $@ $^
 run-matrix-test: $(BUILD_DIR)/matrix-test
+	./$<
+
+UTIL_TST_SRC=$(SRC_DIR)/util.c $(TST_DIR)/util-test.c
+$(BUILD_DIR)/util-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(UTIL_TST_SRC)))
+	$(CC) -lmcgoo -o $@ $^
+run-util-test: $(BUILD_DIR)/util-test
 	./$<
