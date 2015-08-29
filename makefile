@@ -31,7 +31,7 @@ $(BUILD_DIR)/%.o: %.c heap.h | $(BUILD_DIR_CREATED)
 	$(CC) $(CFLAGS) -I. -I$(INC_DIR) -o $@ -c $<
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(shell find . -name \*~)
 
 #
 # TEST
