@@ -41,6 +41,7 @@ TESTS=       \
     heap     \
     matrix   \
     util     \
+    stat     \
 
 test: $(patsubst %, run-%-test, $(TESTS))
 
@@ -60,4 +61,10 @@ UTIL_TST_SRC=$(SRC_DIR)/util.c $(TST_DIR)/util-test.c
 $(BUILD_DIR)/util-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(UTIL_TST_SRC)))
 	$(CC) -lmcgoo -o $@ $^
 run-util-test: $(BUILD_DIR)/util-test
+	./$<
+
+STAT_TST_SRC=$(SRC_DIR)/stat.c $(COMMON_FILES) $(TST_DIR)/stat-test.c
+$(BUILD_DIR)/stat-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(STAT_TST_SRC)))
+	$(CC) -lmcgoo -o $@ $^
+run-stat-test: $(BUILD_DIR)/stat-test
 	./$<
