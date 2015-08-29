@@ -17,6 +17,8 @@ TST_DIR=tst
 
 VPATH=$(SRC_DIR) $(INC_DIR) $(TST_DIR)
 
+COMMON_FILES=$(SRC_DIR)/heap.c $(SRC_DIR)/util.c
+
 #
 # BUILD
 #
@@ -41,14 +43,14 @@ TESTS=       \
 
 test: $(patsubst %, run-%-test, $(TESTS))
 
-$(BUILD_DIR)/heap-test: $(BUILD_DIR)/heap.o $(BUILD_DIR)/heap-test.o
+HEAP_TST_SRC= $(SRC_DIR)/heap.c $(TST_DIR)/heap-test.c
+$(BUILD_DIR)/heap-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(HEAP_TST_SRC)))
 	$(CC) -lmcgoo -o $@ $^
-
 run-heap-test: $(BUILD_DIR)/heap-test
 	./$<
 
-$(BUILD_DIR)/matrix-test: $(BUILD_DIR)/heap.o $(BUILD_DIR)/matrix.o $(BUILD_DIR)/matrix-test.o
+MATRIX_TST_SRC=$(SRC_DIR)/matrix.c $(COMMON_FILES) $(TST_DIR)/matrix-test.c
+$(BUILD_DIR)/matrix-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(MATRIX_TST_SRC)))
 	$(CC) -lmcgoo -o $@ $^
-
 run-matrix-test: $(BUILD_DIR)/matrix-test
 	./$<

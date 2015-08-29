@@ -9,9 +9,10 @@
 //
 
 #include "matrix.h"
+#include "util.h"
 #include "src/heap.h"
 
-#include <string.h> // memset()
+#include <string.h> // memset(), memcpy()
 
 // -----------------------------------------------------------------------------
 // Private Functionality
@@ -100,15 +101,17 @@ bool ANMAT_MatrixEquals(struct ANMAT_Matrix_t *matrixA,
   uint32_t rowI, colI;
 
   if (!dimensionsAreEqual(matrixA, matrixB)) {
-    note("ANMAT_MatrixEquals: dimensions are not equal.");
+    note("ANMAT_MatrixEquals: dimensions are not equal.\n");
     return false;
   }
 
   FOR_ROW(matrixA, rowI) {
     FOR_COL(matrixA, colI) {
-      if (matrixA->data[rowI][colI] != matrixB->data[rowI][colI]) {
+      if (!ANMAT_UtilNeighborhood(matrixA->data[rowI][colI],
+                                  matrixB->data[rowI][colI],
+                                  1e-6)) {
         note("ANMAT_MatrixEquals: values are not equal: ");
-        note("matrixA->data[%d][%d] = %lf) != (matrixB[%d][%d] = %lf)",
+        note("(matrixA->data[%d][%d] = %lf) != (matrixB[%d][%d] = %lf)\n",
              rowI, colI, matrixA->data[rowI][colI],
              rowI, colI, matrixB->data[rowI][colI]);
         return false;
@@ -214,15 +217,100 @@ enum ANMAT_Status_t ANMAT_MatrixTranspose(struct ANMAT_Matrix_t *matrixA,
 enum ANMAT_Status_t ANMAT_MatrixPrint(struct ANMAT_Matrix_t *matrix,
                                       FILE *stream)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  enum ANMAT_Status_t status = ANMAT_SUCCESS;
+  uint32_t rowI, colI;
+
+  fprintf(stream, "{\n");
+  FOR_ROW(matrix, rowI) {
+    FOR_COL(matrix, colI) {
+      fprintf(stream, " %06lf", matrix->data[rowI][colI]);
+    }
+    fprintf(stream, "\n");
+  }
+
+  fprintf(stream, "}\n");
+  fflush(stream);
 
   return status;
+}
+
+static void appendValue(double value,
+                        double **list,
+                        uint32_t *pos,
+                        uint32_t *listSize)
+{
+  if (*pos == *listSize) {
+    double *newList = (double *)ANMAT_HeapAlloc((*listSize <<= 1) * sizeof(double));
+    memcpy(newList, *list, *pos * sizeof(double));
+    ANMAT_HeapFree(*list);
+    *list = newList;
+  }
+
+  (*list)[*pos] = value;
+  (*pos) += 1;
 }
 
 enum ANMAT_Status_t ANMAT_MatrixScan(struct ANMAT_Matrix_t *matrix,
                                      FILE *stream)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  enum ANMAT_Status_t status = ANMAT_SUCCESS;
+  uint32_t pos, listSize;
+  double value, *list;
+  uint32_t rows, rowI, cols, colI;
+
+  // Initialize the list.
+  listSize = 5;
+  pos = 0;
+  list = ANMAT_HeapAlloc(listSize * sizeof(double));
+  if (!list) {
+    status = ANMAT_MEM_ERR;
+  }
+
+  if (status == ANMAT_SUCCESS) {
+    do {
+      switch (fgetc(stream)) {
+      case '{':
+        colI = cols = rows = 0;
+        break;
+      case ' ':
+        fscanf(stream, "%lf" , &value);
+        appendValue(value, &list, &pos, &listSize);
+        colI ++;
+        break;
+      case '\n':
+        // If the dimensions are messed up, then we die.
+        if (cols != 0 && colI != cols) {
+          status = ANMAT_BAD_ARG;
+          goto done;
+        }
+        cols = colI;
+        colI = 0;
+        break;
+      case '}':
+        goto done;
+      default:
+        status = ANMAT_BAD_ARG;
+        goto done;
+      }
+    } while (1);
+  }
+
+ done:
+  if (list) {
+    if (status == ANMAT_SUCCESS) {
+      rows = pos / cols;
+      status = ANMAT_MatrixAlloc(matrix, rows, cols);
+      if (status == ANMAT_SUCCESS) {
+        uint32_t i = 0;
+        FOR_ROW(matrix, rowI) {
+          FOR_COL(matrix, colI) {
+            matrix->data[rowI][colI] = list[i++];
+          }
+        }
+      }
+    }
+    ANMAT_HeapFree(list);
+  }
 
   return status;
 }

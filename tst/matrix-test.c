@@ -9,10 +9,20 @@
 //
 
 #include <unit-test.h>
+#include <unistd.h>    // unlink()
+#include <stdlib.h>    // srand(), rand()
 
 #include "matrix.h"
 
 #include "./test-util.h"
+
+#define TMP_FILE "./tmp"
+static FILE *oStream = NULL, *iStream = NULL;
+
+static void failureHandler(void)
+{
+  //unlink(TMP_FILE);
+}
 
 static int allocTest(void)
 {
@@ -219,14 +229,75 @@ static int transposeTest(void)
   return 0;
 }
 
+static int ioTest(void)
+{
+  struct ANMAT_Matrix_t matrixA, matrixB;
+  uint32_t rowI, colI;
+
+  // Heap should be full.
+  expectHeapFull();
+
+  // Alloc.
+  expectEquals(ANMAT_MatrixAlloc(&matrixA, 11, 11), ANMAT_SUCCESS);
+
+  // We should be missing some bytes from the heap.
+  expectHeapSize(HEAP_SIZE
+                 // 11 rows, with 1 alloc byte
+                 - (11 * sizeof(double)) - 1
+                 // 11 numbers in each row, each with an alloc byte
+                 - (11 * ((11 * sizeof(double)) + 1))
+                 - 0);
+
+  // Set data.
+  srand(1);
+  for (rowI = 0; rowI < ANMAT_MatrixRowCount(&matrixA); rowI ++) {
+    for (colI = 0; colI < ANMAT_MatrixColCount(&matrixA); colI ++) {
+      ANMAT_MatrixData(&matrixA, rowI, colI) = (rand() % 100) / 1.5;
+    }
+  }
+
+  // Open up out stream.
+  expect((oStream = fopen(TMP_FILE, "w")) != NULL);
+
+  // A bad stream should result in a bad scan.
+  expectEquals(ANMAT_MatrixScan(&matrixB, oStream), ANMAT_BAD_ARG);
+
+  // Print and close the out stream.
+  expectEquals(ANMAT_MatrixPrint(&matrixA, oStream), ANMAT_SUCCESS);
+  fclose(oStream);
+
+  // Open up in stream and scan.
+  expect((iStream = fopen(TMP_FILE, "r")) != NULL);
+  expectEquals(ANMAT_MatrixScan(&matrixB, iStream), ANMAT_SUCCESS);
+
+  // They should be equal.
+  expect(ANMAT_MatrixEquals(&matrixA, &matrixB));
+
+  // Close in stream and remove file.
+  fclose(iStream);
+  unlink(TMP_FILE);
+
+  // Free.
+  ANMAT_MatrixFree(&matrixA);
+  ANMAT_MatrixFree(&matrixB);
+
+  // Heap should be full.
+  expectHeapFull();
+
+  return 0;
+}
+
 int main(void)
 {
   announce();
+
+  setFailureHandler(failureHandler);
 
   run(allocTest);
   run(dataTest);
   run(elemOpTest);
   run(transposeTest);
+  run(ioTest);
 
   return 0;
 }

@@ -92,6 +92,7 @@ enum ANMAT_Status_t ANMAT_MatrixPrint(struct ANMAT_Matrix_t *matrix,
                                       FILE *stream);
 
 // Scan a matrix from a stream.
+// The matrix will be allocated for the user.
 enum ANMAT_Status_t ANMAT_MatrixScan(struct ANMAT_Matrix_t *matrix,
                                      FILE *stream);
 

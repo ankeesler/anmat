@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 // The log base 2 size of the heap.
-#define ANMAT_HEAP_SIZE_LOG (10)
+#define ANMAT_HEAP_SIZE_LOG (12)
 
 // Initialize the heap.
 // Note that the heap is automagically initliazed
