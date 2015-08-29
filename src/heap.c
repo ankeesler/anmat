@@ -157,6 +157,9 @@ void ANMAT_HeapPrint(FILE *stream)
   for (refCount = &refCounts[0], refCountMask = BIT(0), alloc = &datHeapDoe[0];
        refCount != REF_COUNTS_END;
        refCount ++, alloc ++) {
+    if (refCountMask == BIT(0)) {
+      fprintf(stream, "(%ld) ", refCount - &refCounts[0]);
+    }
     if (*refCount & refCountMask) {
       fprintf(stream, " 0x%02X", *alloc);
     } else {
