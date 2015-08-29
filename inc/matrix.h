@@ -30,7 +30,6 @@ struct ANMAT_Matrix_t {
 // Memory Management
 
 // Allocate a matrix with a number of rows and a number of cols.
-// Returns NULL if the memory cannot be allocated or rows or cols is 0.
 enum ANMAT_Status_t ANMAT_MatrixAlloc(struct ANMAT_Matrix_t *matrix,
                                       uint32_t rows,
                                       uint32_t cols);
