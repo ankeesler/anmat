@@ -11,7 +11,11 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
+#include <stdint.h>
 #include <stdbool.h>
+
+// -----------------------------------------------------------------------------
+// Elementary Math Functions
 
 // Find the max of two values.
 double ANMAT_UtilMax(const double a,
@@ -25,5 +29,13 @@ double ANMAT_UtilAbs(const double a);
 bool ANMAT_UtilNeighborhood(const double a,
                             const double b,
                             const double epsilon);
+
+// Find a raised to the power p.
+double ANMAT_UtilPower(double a,
+                       uint32_t p);
+
+// Find the r'th root of a.
+double ANMAT_UtilRoot(double a,
+                      uint32_t r);
 
 #endif /* __UTIL_H__ */

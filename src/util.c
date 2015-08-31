@@ -31,3 +31,22 @@ inline bool ANMAT_UtilNeighborhood(const double a,
 {
   return (ANMAT_UtilAbs(a - b) <= epsilon);
 }
+
+// Find a raised to the power p.
+double ANMAT_UtilPower(double a,
+                       uint32_t p)
+{
+  double value = 0;
+
+  return value;
+}
+
+// Find the r'th root of a.
+double ANMAT_UtilRoot(double a,
+                      uint32_t r)
+{
+  // We are trying to find x in x^r = a.
+  double x = 0;
+
+  return x;
+}

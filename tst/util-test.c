@@ -30,6 +30,15 @@ static int utilTest(void)
   expect(ANMAT_UtilNeighborhood(-1, 2, 3));
   expect(ANMAT_UtilNeighborhood(-1, 2, 3.1));
 
+  //expectEquals(ANMAT_UtilPower(1, 0), 1);
+  //expectEquals(ANMAT_UtilPower(1, 1), 1);
+  //expectEquals(ANMAT_UtilPower(1, 2), 1);
+  //expectEquals(ANMAT_UtilPower(1, 5), 1);
+  //expectEquals(ANMAT_UtilPower(0, 0), );
+  //expectEquals(ANMAT_UtilPower(0, 1), 0);
+  //expectEquals(ANMAT_UtilPower(0, 2), 0);
+  //expectEquals(ANMAT_UtilPower(0, 5), 0);
+
   return 0;
 }
 
