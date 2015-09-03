@@ -26,7 +26,7 @@ static void failureHandler(void)
 
 static int allocTest(void)
 {
-  struct ANMAT_Matrix_t matrix1, matrix2;
+  AnmatMatrix_t matrix1, matrix2;
 
   // Heap should be fresh.
   expectHeapFull();
@@ -72,7 +72,7 @@ static int allocTest(void)
 
 static int dataTest(void)
 {
-  struct ANMAT_Matrix_t matrixA, matrixB;
+  AnmatMatrix_t matrixA, matrixB;
 
   // Heap should be full.
   expectHeapFull();
@@ -107,7 +107,7 @@ static int dataTest(void)
 
 static int elemOpTest(void)
 {
-  struct ANMAT_Matrix_t matrixA, matrixB, matrixC, matrixD, matrixE;
+  AnmatMatrix_t matrixA, matrixB, matrixC, matrixD, matrixE;
 
   // Heap should be full.
   expectHeapFull();
@@ -187,7 +187,7 @@ static int elemOpTest(void)
 
 static int transposeTest(void)
 {
-  struct ANMAT_Matrix_t matrixA, matrixB, matrixC, matrixD;
+  AnmatMatrix_t matrixA, matrixB, matrixC, matrixD;
 
   // Heap should be full.
   expectHeapFull();
@@ -231,7 +231,7 @@ static int transposeTest(void)
 
 static int ioTest(void)
 {
-  struct ANMAT_Matrix_t matrixA, matrixB;
+  AnmatMatrix_t matrixA, matrixB;
   uint32_t rowI, colI;
 
   // Heap should be full.

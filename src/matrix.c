@@ -44,11 +44,11 @@ static inline double dotProduct(double *u, double *v, uint32_t length)
 // -----------------------------------------------------------------------------
 // Memory Management
 
-enum ANMAT_Status_t ANMAT_MatrixAlloc(struct ANMAT_Matrix_t *matrix,
-                                      uint32_t rows,
-                                      uint32_t cols)
+AnmatStatus_t ANMAT_MatrixAlloc(AnmatMatrix_t *matrix,
+                                uint32_t rows,
+                                uint32_t cols)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  AnmatStatus_t status = ANMAT_BAD_ARG;
   uint32_t rowI, colI;
 
   if (rows && cols) {
@@ -77,7 +77,7 @@ enum ANMAT_Status_t ANMAT_MatrixAlloc(struct ANMAT_Matrix_t *matrix,
   return status;
 }
 
-void ANMAT_MatrixFree(struct ANMAT_Matrix_t *matrix)
+void ANMAT_MatrixFree(AnmatMatrix_t *matrix)
 {
   uint32_t rowI;
 
@@ -95,8 +95,8 @@ void ANMAT_MatrixFree(struct ANMAT_Matrix_t *matrix)
 // -----------------------------------------------------------------------------
 // Elementary operations
 
-bool ANMAT_MatrixEquals(struct ANMAT_Matrix_t *matrixA,
-                        struct ANMAT_Matrix_t *matrixB)
+bool ANMAT_MatrixEquals(AnmatMatrix_t *matrixA,
+                        AnmatMatrix_t *matrixB)
 {
   uint32_t rowI, colI;
 
@@ -122,12 +122,12 @@ bool ANMAT_MatrixEquals(struct ANMAT_Matrix_t *matrixA,
   return true;
 }
 
-static enum ANMAT_Status_t addOrSubtractMatrices(struct ANMAT_Matrix_t *matrixA,
-                                                 struct ANMAT_Matrix_t *matrixB,
-                                                 struct ANMAT_Matrix_t *matrixC,
-                                                 bool add)
+static AnmatStatus_t addOrSubtractMatrices(AnmatMatrix_t *matrixA,
+                                           AnmatMatrix_t *matrixB,
+                                           AnmatMatrix_t *matrixC,
+                                           bool add)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  AnmatStatus_t status = ANMAT_BAD_ARG;
   uint32_t rowI, colI;
 
   if (dimensionsAreEqual(matrixA, matrixB)
@@ -146,26 +146,26 @@ static enum ANMAT_Status_t addOrSubtractMatrices(struct ANMAT_Matrix_t *matrixA,
   return status;
 }
 
-enum ANMAT_Status_t ANMAT_MatrixAdd(struct ANMAT_Matrix_t *matrixA,
-                                    struct ANMAT_Matrix_t *matrixB,
-                                    struct ANMAT_Matrix_t *matrixC)
+AnmatStatus_t ANMAT_MatrixAdd(AnmatMatrix_t *matrixA,
+                              AnmatMatrix_t *matrixB,
+                              AnmatMatrix_t *matrixC)
 {
   return addOrSubtractMatrices(matrixA, matrixB, matrixC, true); // add?
 }
 
-enum ANMAT_Status_t ANMAT_MatrixSubtract(struct ANMAT_Matrix_t *matrixA,
-                                         struct ANMAT_Matrix_t *matrixB,
-                                         struct ANMAT_Matrix_t *matrixC)
+AnmatStatus_t ANMAT_MatrixSubtract(AnmatMatrix_t *matrixA,
+                                   AnmatMatrix_t *matrixB,
+                                   AnmatMatrix_t *matrixC)
 {
   return addOrSubtractMatrices(matrixA, matrixB, matrixC, false); // add?
 }
 
-enum ANMAT_Status_t ANMAT_MatrixMultiply(struct ANMAT_Matrix_t *matrixA,
-                                         struct ANMAT_Matrix_t *matrixB,
-                                         struct ANMAT_Matrix_t *matrixC)
+AnmatStatus_t ANMAT_MatrixMultiply(AnmatMatrix_t *matrixA,
+                                   AnmatMatrix_t *matrixB,
+                                   AnmatMatrix_t *matrixC)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
-  struct ANMAT_Matrix_t matrixBT;
+  AnmatStatus_t status = ANMAT_BAD_ARG;
+  AnmatMatrix_t matrixBT;
   uint32_t rowI, colI;
 
   if (matrixA->cols == matrixB->rows
@@ -193,10 +193,10 @@ enum ANMAT_Status_t ANMAT_MatrixMultiply(struct ANMAT_Matrix_t *matrixA,
 // -----------------------------------------------------------------------------
 // Matrix Operations
 
-enum ANMAT_Status_t ANMAT_MatrixTranspose(struct ANMAT_Matrix_t *matrixA,
-                                          struct ANMAT_Matrix_t *matrixB)
+AnmatStatus_t ANMAT_MatrixTranspose(AnmatMatrix_t *matrixA,
+                                    AnmatMatrix_t *matrixB)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  AnmatStatus_t status = ANMAT_BAD_ARG;
   uint32_t rowI, colI;
 
   if (matrixA->rows == matrixB->cols && matrixA->cols == matrixB->rows) {
@@ -214,10 +214,10 @@ enum ANMAT_Status_t ANMAT_MatrixTranspose(struct ANMAT_Matrix_t *matrixA,
 // -----------------------------------------------------------------------------
 // I/O
 
-enum ANMAT_Status_t ANMAT_MatrixPrint(struct ANMAT_Matrix_t *matrix,
-                                      FILE *stream)
+AnmatStatus_t ANMAT_MatrixPrint(AnmatMatrix_t *matrix,
+                                FILE *stream)
 {
-  enum ANMAT_Status_t status = ANMAT_SUCCESS;
+  AnmatStatus_t status = ANMAT_SUCCESS;
   uint32_t rowI, colI;
 
   fprintf(stream, "{\n");
@@ -250,10 +250,10 @@ static void appendValue(double value,
   (*pos) += 1;
 }
 
-enum ANMAT_Status_t ANMAT_MatrixScan(struct ANMAT_Matrix_t *matrix,
-                                     FILE *stream)
+AnmatStatus_t ANMAT_MatrixScan(AnmatMatrix_t *matrix,
+                               FILE *stream)
 {
-  enum ANMAT_Status_t status = ANMAT_SUCCESS;
+  AnmatStatus_t status = ANMAT_SUCCESS;
   uint32_t pos, listSize;
   double value, *list;
   uint32_t rows, rowI, cols, colI;

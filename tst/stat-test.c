@@ -16,7 +16,7 @@
 
 static int allocTest(void)
 {
-  struct ANMAT_Vector_t vector;
+  AnmatVector_t vector;
 
   // Heap should be full.
   expectHeapFull();
@@ -44,7 +44,7 @@ static int allocTest(void)
 
 static int dataTest(void)
 {
-  struct ANMAT_Vector_t vector;
+  AnmatVector_t vector;
 
   // Heap should be full.
   expectHeapFull();
@@ -80,7 +80,7 @@ static int dataTest(void)
 
 static int averageTest(void)
 {
-  struct ANMAT_Vector_t vector;
+  AnmatVector_t vector;
 
   // Heap should be full.
   expectHeapFull();

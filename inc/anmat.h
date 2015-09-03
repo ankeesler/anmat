@@ -10,7 +10,7 @@
 #define __ANMAT_H__
 
 // Status codes.
-enum ANMAT_Status_t {
+typedef enum {
   // Success.
   ANMAT_SUCCESS       = 0,
 
@@ -20,7 +20,7 @@ enum ANMAT_Status_t {
   // Bad argument.
   ANMAT_BAD_ARG       = 2,
 
-};
+} AnmatStatus_t;
 
 // Matrix API.
 #include "matrix.h"

@@ -21,10 +21,10 @@
 // Memory Management
 
 // Allocate a vector.
-enum ANMAT_Status_t ANMAT_VectorAlloc(struct ANMAT_Vector_t *vector,
-                                      uint32_t count)
+AnmatStatus_t ANMAT_VectorAlloc(AnmatVector_t *vector,
+                                uint32_t count)
 {
-  enum ANMAT_Status_t status = ANMAT_BAD_ARG;
+  AnmatStatus_t status = ANMAT_BAD_ARG;
 
   if (count) {
     vector->data = (double *)ANMAT_HeapAlloc(count * sizeof(double));
@@ -36,7 +36,7 @@ enum ANMAT_Status_t ANMAT_VectorAlloc(struct ANMAT_Vector_t *vector,
 }
 
 // Free a vector.
-void ANMAT_VectorFree(struct ANMAT_Vector_t *vector)
+void ANMAT_VectorFree(AnmatVector_t *vector)
 {
   if (vector->data) {
     ANMAT_HeapFree(vector->data);
@@ -46,7 +46,7 @@ void ANMAT_VectorFree(struct ANMAT_Vector_t *vector)
 // -----------------------------------------------------------------------------
 // Elementary Operations
 
-double ANMAT_StatAverage(struct ANMAT_Vector_t *vector)
+double ANMAT_StatAverage(AnmatVector_t *vector)
 {
   double total = 0;
   uint32_t valueI;

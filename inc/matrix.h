@@ -21,21 +21,21 @@
 // Structs
 
 // An m x n matrix.
-struct ANMAT_Matrix_t {
+typedef struct {
   uint32_t rows, cols;
   double **data;
-};
+} AnmatMatrix_t;
 
 // -----------------------------------------------------------------------------
 // Memory Management
 
 // Allocate a matrix with a number of rows and a number of cols.
-enum ANMAT_Status_t ANMAT_MatrixAlloc(struct ANMAT_Matrix_t *matrix,
-                                      uint32_t rows,
-                                      uint32_t cols);
+AnmatStatus_t ANMAT_MatrixAlloc(AnmatMatrix_t *matrix,
+                                uint32_t rows,
+                                uint32_t cols);
 
 // Free a matrix from the heap.
-void ANMAT_MatrixFree(struct ANMAT_Matrix_t *matrix);
+void ANMAT_MatrixFree(AnmatMatrix_t *matrix);
 
 // -----------------------------------------------------------------------------
 // Data Access
@@ -54,45 +54,45 @@ void ANMAT_MatrixFree(struct ANMAT_Matrix_t *matrix);
 // Elementary operations
 
 // Returns true iff matrixA is equal to matrixB.
-bool ANMAT_MatrixEquals(struct ANMAT_Matrix_t *matrixA,
-                        struct ANMAT_Matrix_t *matrixB);
+bool ANMAT_MatrixEquals(AnmatMatrix_t *matrixA,
+                        AnmatMatrix_t *matrixB);
 
 // Add matrixA and matrixB and put the result inside matrixC.
 // The matrixC must already be allocated.
-enum ANMAT_Status_t ANMAT_MatrixAdd(struct ANMAT_Matrix_t *matrixA,
-                                    struct ANMAT_Matrix_t *matrixB,
-                                    struct ANMAT_Matrix_t *matrixC);
+AnmatStatus_t ANMAT_MatrixAdd(AnmatMatrix_t *matrixA,
+                              AnmatMatrix_t *matrixB,
+                              AnmatMatrix_t *matrixC);
 
 // Subtract matrixB from matrixA and put the result inside matrixC.
 // The matrixC must already be allocated.
-enum ANMAT_Status_t ANMAT_MatrixSubtract(struct ANMAT_Matrix_t *matrixA,
-                                         struct ANMAT_Matrix_t *matrixB,
-                                         struct ANMAT_Matrix_t *matrixC);
+AnmatStatus_t ANMAT_MatrixSubtract(AnmatMatrix_t *matrixA,
+                                   AnmatMatrix_t *matrixB,
+                                   AnmatMatrix_t *matrixC);
 
 // Multiply matrixA by matrixB and put the result inside matrixC.
 // The matrixC must already be allocated.
-enum ANMAT_Status_t ANMAT_MatrixMultiply(struct ANMAT_Matrix_t *matrixA,
-                                         struct ANMAT_Matrix_t *matrixB,
-                                         struct ANMAT_Matrix_t *matrixC);
+AnmatStatus_t ANMAT_MatrixMultiply(AnmatMatrix_t *matrixA,
+                                   AnmatMatrix_t *matrixB,
+                                   AnmatMatrix_t *matrixC);
 
 // -----------------------------------------------------------------------------
 // Matrix Operations
 
 // Build the transpose of matrixA in matrixB.
 // The matrixB must already be allocated.
-enum ANMAT_Status_t ANMAT_MatrixTranspose(struct ANMAT_Matrix_t *matrixA,
-                                          struct ANMAT_Matrix_t *matrixB);
+AnmatStatus_t ANMAT_MatrixTranspose(AnmatMatrix_t *matrixA,
+                                    AnmatMatrix_t *matrixB);
 
 // -----------------------------------------------------------------------------
 // I/O
 
 // Print a matrix to a stream.
-enum ANMAT_Status_t ANMAT_MatrixPrint(struct ANMAT_Matrix_t *matrix,
-                                      FILE *stream);
+AnmatStatus_t ANMAT_MatrixPrint(AnmatMatrix_t *matrix,
+                                FILE *stream);
 
 // Scan a matrix from a stream.
 // The matrix will be allocated for the user.
-enum ANMAT_Status_t ANMAT_MatrixScan(struct ANMAT_Matrix_t *matrix,
-                                     FILE *stream);
+AnmatStatus_t ANMAT_MatrixScan(AnmatMatrix_t *matrix,
+                               FILE *stream);
 
 #endif /* __MATRIX_H__ */

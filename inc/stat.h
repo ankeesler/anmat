@@ -15,20 +15,20 @@
 // -----------------------------------------------------------------------------
 // Structs
 
-struct ANMAT_Vector_t {
+typedef struct {
   uint32_t count;
   double *data;
-};
+} AnmatVector_t;
 
 // -----------------------------------------------------------------------------
 // Memory Management
 
 // Allocate a vector.
-enum ANMAT_Status_t ANMAT_VectorAlloc(struct ANMAT_Vector_t *vector,
-                                      uint32_t count);
+AnmatStatus_t ANMAT_VectorAlloc(AnmatVector_t *vector,
+                                uint32_t count);
 
 // Free a vector.
-void ANMAT_VectorFree(struct ANMAT_Vector_t *vector);
+void ANMAT_VectorFree(AnmatVector_t *vector);
 
 // -----------------------------------------------------------------------------
 // Data Access
@@ -43,4 +43,4 @@ void ANMAT_VectorFree(struct ANMAT_Vector_t *vector);
 // Elementary Operations
 
 // Calculate the average of the data in the vector.
-double ANMAT_StatAverage(struct ANMAT_Vector_t *vector);
+double ANMAT_StatAverage(AnmatVector_t *vector);
