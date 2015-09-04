@@ -22,7 +22,13 @@ typedef enum {
 
 } AnmatStatus_t;
 
+// Utilities API.
+#include "util.h"
+
 // Matrix API.
 #include "matrix.h"
+
+// Statistics API.
+#include "stat.h"
 
 #endif /* __ANMAT_H__ */
