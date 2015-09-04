@@ -91,6 +91,19 @@ static int memTest(void)
   return 0;
 }
 
+static int ieee754Test(void)
+{
+  double negative = -1;
+  double positive = 1;
+
+  expect(anmatUtilIsPositive(positive));
+  expect(!anmatUtilIsNegative(positive));
+  expect(!anmatUtilIsPositive(negative));
+  expect(anmatUtilIsNegative(negative));
+
+  return 0;
+}
+
 int main(void)
 {
   announce();
@@ -98,6 +111,7 @@ int main(void)
   run(utilTest);
   run(powerTest);
   run(memTest);
+  run(ieee754Test);
 
   return 0;
 }

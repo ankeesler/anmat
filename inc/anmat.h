@@ -10,6 +10,7 @@
 #define __ANMAT_H__
 
 // Standard C definitions.
+#include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 

@@ -14,6 +14,21 @@
 #include "anmat.h"
 
 // -----------------------------------------------------------------------------
+// IEEE 754 Floating Point Definitions
+
+#define ANMAT_IEEE_754_SIGN_BIT_OFFSET   (63)
+#define ANMAT_IEEE_754_SIGN_BIT_MASK     (1UL << ANMAT_IEEE_754_SIGN_BIT_OFFSET)
+#define ANMAT_IEEE_754_SIGN_BIT_POSITIVE (0UL << ANMAT_IEEE_754_SIGN_BIT_OFFSET)
+#define ANMAT_IEEE_754_SIGN_BIT_NEGATIVE (1UL << ANMAT_IEEE_754_SIGN_BIT_OFFSET)
+
+#define anmatUtilIsPositive(a)                      \
+  ((((uint64_t)(a)) & ANMAT_IEEE_754_SIGN_BIT_MASK) \
+   == ANMAT_IEEE_754_SIGN_BIT_POSITIVE)
+#define anmatUtilIsNegative(a)                      \
+  ((((uint64_t)(a)) & ANMAT_IEEE_754_SIGN_BIT_MASK) \
+   == ANMAT_IEEE_754_SIGN_BIT_NEGATIVE)
+
+// -----------------------------------------------------------------------------
 // Elementary Memory Memory Manipulation
 
 // Copy length bytes from source to destination.
