@@ -19,7 +19,7 @@
 // Copy length bytes from source to destination.
 void anmatMemcpy(void *destination,
                  void *source,
-                 uint32_t length);
+                 unsigned int length);
 
 // -----------------------------------------------------------------------------
 // Elementary Math Functions
@@ -39,10 +39,10 @@ bool anmatUtilNeighborhood(const double a,
 
 // Find a raised to the power p.
 double anmatUtilPower(double a,
-                      uint32_t p);
+                      unsigned int p);
 
 // Find the r'th root of a.
 double anmatUtilRoot(double a,
-                     uint32_t r);
+                     unsigned int r);
 
 #endif /* __UTIL_H__ */

@@ -22,7 +22,7 @@ void heapInit(void);
 // Returns NULL on failure.
 // The heap is automagically initialized the first time this is called.
 // Not thread safe.
-void *heapAlloc(uint32_t count);
+void *heapAlloc(unsigned int count);
 
 // Free memory.
 // Not thread safe.
@@ -30,7 +30,7 @@ void heapFree(void *memory);
 
 // The number of free bytes in the heap.
 // Useful for debugging.
-extern uint32_t heapFreeBytesCount;
+extern unsigned int heapFreeBytesCount;
 
 // Print the heap.
 // Useful for debugging.

@@ -26,7 +26,7 @@
 
 // There is 1 contiguous chunk of memory for the heap.
 
-static uint8_t datHeapDoe[HEAP_SIZE];
+static unsigned char datHeapDoe[HEAP_SIZE];
 
 // We keep track of each byte of the heap wth a bit. We mark the end of
 // an allocation with a '0' bit.
@@ -34,21 +34,21 @@ static uint8_t datHeapDoe[HEAP_SIZE];
 // to find the end of the array.
 
 #define REF_COUNTS_SIZE (HEAP_SIZE >> 3)
-static uint8_t refCounts[REF_COUNTS_SIZE + 1];
+static unsigned char refCounts[REF_COUNTS_SIZE + 1];
 #define REF_COUNTS_END (&refCounts[REF_COUNTS_SIZE])
 
 #define BIT(i) (1UL << (i))
 
 // We also keep track of free bytes for debugging/testing purposes.
 
-uint32_t heapFreeBytesCount = HEAP_SIZE;
+unsigned int heapFreeBytesCount = HEAP_SIZE;
 
 // -----------------------------------------------------------------------------
 // API
 
 void heapInit(void)
 {
-  uint8_t *refCount = &refCounts[0];
+  unsigned char *refCount = &refCounts[0];
 
   while (refCount != REF_COUNTS_END) {
     *refCount++ = 0x00;
@@ -57,11 +57,11 @@ void heapInit(void)
   heapFreeBytesCount = HEAP_SIZE;
 }
 
-static void markRefCounts(uint8_t *alloc, uint32_t count)
+static void markRefCounts(unsigned char *alloc, unsigned int count)
 {
-  long heapOffset         = alloc - &datHeapDoe[0];
-  uint8_t *refCount       = &refCounts[heapOffset >> 3];
-  uint16_t refCountsMask  = BIT(heapOffset & 0x7);
+  long heapOffset            = alloc - &datHeapDoe[0];
+  unsigned char *refCount    = &refCounts[heapOffset >> 3];
+  unsigned int refCountsMask = BIT(heapOffset & 0x7);
   
   note("heapAlloc: marking heap from 0x%p to 0x%p\n",
        alloc, alloc + count);
@@ -82,10 +82,10 @@ static void markRefCounts(uint8_t *alloc, uint32_t count)
   heapFreeBytesCount -= 1;
 }
 
-void *heapAlloc(uint32_t count)
+void *heapAlloc(unsigned int count)
 {
-  uint8_t *alloc = NULL, *heapPos = NULL, *refCount = NULL;
-  uint32_t  bitI;
+  unsigned char *alloc = NULL, *heapPos = NULL, *refCount = NULL;
+  unsigned int bitI;
   bool thisByteUsed, lastByteUsed;
   static bool heapInitialized = false;
 
@@ -126,10 +126,11 @@ void *heapAlloc(uint32_t count)
 
 void heapFree(void *memory)
 {
-  uint8_t *alloc          = (uint8_t *)memory; // stupid compiler grumble...
-  long heapOffset         = alloc - &datHeapDoe[0];
-  uint32_t refCountsIndex = heapOffset >> 3;
-  uint16_t refCountsMask  = BIT(heapOffset & 0x7);
+  // stupid compiler grumble...
+  unsigned char *alloc        = (unsigned char *)memory;
+  long heapOffset             = alloc - &datHeapDoe[0];
+  unsigned int refCountsIndex = heapOffset >> 3;
+  unsigned int refCountsMask  = BIT(heapOffset & 0x7);
 
   if (alloc >= &datHeapDoe[0] && alloc < &datHeapDoe[HEAP_SIZE]) {
     while (refCounts[refCountsIndex] & refCountsMask) {
@@ -147,8 +148,8 @@ void heapFree(void *memory)
 
 void heapPrint(FILE *stream)
 {
-  uint8_t *refCount, *alloc;
-  uint32_t refCountMask;
+  unsigned char *refCount, *alloc;
+  unsigned int refCountMask;
 
   for (refCount = &refCounts[0], refCountMask = BIT(0), alloc = &datHeapDoe[0];
        refCount != REF_COUNTS_END;

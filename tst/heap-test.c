@@ -9,6 +9,7 @@
 //
 
 #include <unit-test.h>
+#include <stdint.h>   // for standard sized types
 
 #include "src/heap.h"
 #include "util.h" // anmatMemcpy()
@@ -67,7 +68,7 @@ static int doubleTest(void)
 
 static int stressTest(void)
 {
-  uint8_t *pointers[3] = {NULL, NULL, NULL,};
+  unsigned char *pointers[3] = {NULL, NULL, NULL,};
 
   // Initializing the heap should mean all the bytes are available.
   heapInit();
@@ -76,16 +77,16 @@ static int stressTest(void)
   // Let's allocate the whole heap with two chunks. One will be
   // (HEAP_SIZE / 4 - 1) bytes and the other will be
   // ((3 * HEAP_SIZE / 4) - 1) bytes.
-  pointers[0] = (uint8_t *)heapAlloc((HEAP_SIZE / 4) - 1); 
+  pointers[0] = (unsigned char *)heapAlloc((HEAP_SIZE / 4) - 1); 
   expect(pointers[0] != NULL);
-  pointers[1] = (uint8_t *)heapAlloc(((3 * HEAP_SIZE) / 4) - 1); 
+  pointers[1] = (unsigned char *)heapAlloc(((3 * HEAP_SIZE) / 4) - 1); 
   expect(pointers[1] != NULL);
 
   // There should be no bytes left.
   expectHeapFull();
 
   // Therefore, we should not be able to allocate anymore.
-  pointers[2] = (uint8_t *)heapAlloc(1);
+  pointers[2] = (unsigned char *)heapAlloc(1);
   expect(pointers[2] == NULL);
 
   // If we free the first guy, we should only be missing the second big chunk.

@@ -17,7 +17,7 @@
 // Structs
 
 typedef struct {
-  uint32_t count;
+  unsigned int count;
   double *data;
 } AnmatVector_t;
 
@@ -26,7 +26,7 @@ typedef struct {
 
 // Allocate a vector.
 AnmatStatus_t anmatVectorAlloc(AnmatVector_t *vector,
-                               uint32_t count);
+                               unsigned int count);
 
 // Free a vector.
 void anmatVectorFree(AnmatVector_t *vector);

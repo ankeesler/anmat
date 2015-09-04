@@ -18,7 +18,7 @@
 
 // An m x n matrix.
 typedef struct {
-  uint32_t rows, cols;
+  unsigned int rows, cols;
   double **data;
 } AnmatMatrix_t;
 
@@ -27,8 +27,8 @@ typedef struct {
 
 // Allocate a matrix with a number of rows and a number of cols.
 AnmatStatus_t anmatMatrixAlloc(AnmatMatrix_t *matrix,
-                               uint32_t rows,
-                               uint32_t cols);
+                               unsigned int rows,
+                               unsigned int cols);
 
 // Free a matrix from the heap.
 void anmatMatrixFree(AnmatMatrix_t *matrix);

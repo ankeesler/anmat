@@ -232,7 +232,7 @@ static int transposeTest(void)
 static int ioTest(void)
 {
   AnmatMatrix_t matrixA, matrixB;
-  uint32_t rowI, colI;
+  unsigned int rowI, colI;
 
   // Heap should be full.
   expectHeapEmpty();

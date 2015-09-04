@@ -22,7 +22,7 @@
 
 // Allocate a vector.
 AnmatStatus_t anmatVectorAlloc(AnmatVector_t *vector,
-                                uint32_t count)
+                                unsigned int count)
 {
   AnmatStatus_t status = ANMAT_BAD_ARG;
 
@@ -49,7 +49,7 @@ void anmatVectorFree(AnmatVector_t *vector)
 double anmatStatAverage(AnmatVector_t *vector)
 {
   double total = 0;
-  uint32_t valueI;
+  unsigned int valueI;
 
   FOR_VALUE(vector, valueI) {
     total += vector->data[valueI];

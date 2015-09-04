@@ -44,9 +44,9 @@ static int utilTest(void)
 
 static int memTest(void)
 {
-  uint8_t buffer1[10] = {1,2,3,4,5,6,7,8,9,10,}, buffer2[10] = {0,};
-  uint8_t *src, *dst;
-  uint8_t i;
+  unsigned char buffer1[10] = {1,2,3,4,5,6,7,8,9,10,}, buffer2[10] = {0,};
+  unsigned char *src, *dst;
+  unsigned int i;
 
   anmatMemcpy(buffer2, buffer1, 10);
   for (i = 0; i <= 9; i ++) { expectEquals(buffer2[i], buffer1[i]); }

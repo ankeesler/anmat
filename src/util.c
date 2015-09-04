@@ -16,9 +16,9 @@
 // Copy length bytes from source to destination.
 void anmatMemcpy(void *destination,
                  void *source,
-                 uint32_t length)
+                 unsigned int length)
 {
-  uint8_t *destByte, *sourceByte;
+  unsigned char *destByte, *sourceByte;
 
   // If the source overlapps the destination from the bottom, we
   // copy from the end. Else, we can copy normally.
@@ -60,7 +60,7 @@ inline bool anmatUtilNeighborhood(const double a,
 
 // Find a raised to the power p.
 double anmatUtilPower(double a,
-                      uint32_t p)
+                      unsigned int p)
 {
   double value = 0;
 
@@ -69,7 +69,7 @@ double anmatUtilPower(double a,
 
 // Find the r'th root of a.
 double anmatUtilRoot(double a,
-                     uint32_t r)
+                     unsigned int r)
 {
   // We are trying to find x in x^r = a.
   double x = 0;
