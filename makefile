@@ -45,7 +45,7 @@ TESTS=       \
 
 test: $(patsubst %, run-%-test, $(TESTS))
 
-HEAP_TST_SRC= $(SRC_DIR)/heap.c $(TST_DIR)/heap-test.c
+HEAP_TST_SRC= $(SRC_DIR)/heap.c $(TST_DIR)/heap-test.c $(SRC_DIR)/util.c
 $(BUILD_DIR)/heap-test: $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(HEAP_TST_SRC)))
 	$(CC) -lmcgoo -o $@ $^
 run-heap-test: $(BUILD_DIR)/heap-test

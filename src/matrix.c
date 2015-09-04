@@ -238,7 +238,7 @@ static void appendValue(double value,
 {
   if (*pos == *listSize) {
     double *newList = (double *)heapAlloc((*listSize <<= 1) * sizeof(double));
-    memcpy(newList, *list, *pos * sizeof(double));
+    anmatMemcpy(newList, *list, *pos * sizeof(double));
     heapFree(*list);
     *list = newList;
   }

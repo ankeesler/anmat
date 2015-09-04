@@ -14,6 +14,14 @@
 #include "anmat.h"
 
 // -----------------------------------------------------------------------------
+// Elementary Memory Manipulation
+
+// Copy length bytes from source to destination.
+void anmatMemcpy(void *destination,
+                 void *source,
+                 uint32_t length);
+
+// -----------------------------------------------------------------------------
 // Elementary Math Functions
 
 // Find the max of two values.

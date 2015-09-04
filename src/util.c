@@ -10,6 +10,32 @@
 
 #include "util.h"
 
+// -----------------------------------------------------------------------------
+// Elementary Memory Manipulation
+
+// Copy length bytes from source to destination.
+void anmatMemcpy(void *destination,
+                 void *source,
+                 uint32_t length)
+{
+  uint8_t *destByte, *sourceByte;
+
+  // If the source overlapps the destination from the bottom, we
+  // copy from the end. Else, we can copy normally.
+  if (source < destination) {
+    for (destByte = destination + length - 1, sourceByte = source + length - 1;
+         length --;
+         *destByte-- = *sourceByte--) { }
+  } else {
+    for (destByte = destination, sourceByte = source;
+         length --;
+         *destByte++ = *sourceByte++) { }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Elementary Math Functions
+
 // Find the max of two values.
 inline double anmatUtilMax(const double a,
                            const double b)

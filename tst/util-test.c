@@ -42,11 +42,40 @@ static int utilTest(void)
   return 0;
 }
 
+static int memTest(void)
+{
+  uint8_t buffer1[10] = {1,2,3,4,5,6,7,8,9,10,}, buffer2[10] = {0,};
+  uint8_t *src, *dst;
+  uint8_t i;
+
+  anmatMemcpy(buffer2, buffer1, 10);
+  for (i = 0; i <= 9; i ++) { expectEquals(buffer2[i], buffer1[i]); }
+
+  src = &buffer1[0];
+  dst = &buffer1[2];
+  anmatMemcpy(dst, src, 5);
+  expectEquals(dst[0], 1);
+  expectEquals(dst[1], 2);
+  expectEquals(dst[2], 3);
+  expectEquals(dst[3], 4);
+  expectEquals(dst[4], 5);
+
+  src = &buffer1[7];
+  dst = &buffer1[6];
+  anmatMemcpy(dst, src, 3);
+  expectEquals(dst[0], 8);
+  expectEquals(dst[1], 9);
+  expectEquals(dst[2], 10);
+
+  return 0;
+}
+
 int main(void)
 {
   announce();
 
   run(utilTest);
+  run(memTest);
 
   return 0;
 }

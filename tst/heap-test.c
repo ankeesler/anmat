@@ -11,6 +11,7 @@
 #include <unit-test.h>
 
 #include "src/heap.h"
+#include "util.h" // anmatMemcpy()
 
 #include "./test-util.h"
 
@@ -137,7 +138,7 @@ static int structTest(void)
   expectEquals(smallStructPointer->member1, 1);
   expectEquals(smallStructPointer->member2, 2);
   expectEquals(smallStructPointer->member3, 3);
-  memcpy(&smallStruct, smallStructPointer, sizeof(struct SmallTestStruct_t));
+  anmatMemcpy(&smallStruct, smallStructPointer, sizeof(struct SmallTestStruct_t));
   expectEquals(smallStruct.member1, 1);
   expectEquals(smallStruct.member2, 2);
   expectEquals(smallStruct.member3, 3);
@@ -156,7 +157,7 @@ static int structTest(void)
   expectEquals(largeStructPointer->member2, 2);
   expectEquals(largeStructPointer->member3, 3);
   expectEquals(largeStructPointer->member4, 4);
-  memcpy(&largeStruct, largeStructPointer, sizeof(struct LargeTestStruct_t));
+  anmatMemcpy(&largeStruct, largeStructPointer, sizeof(struct LargeTestStruct_t));
   expectEquals(largeStruct.member1, 1);
   expectEquals(largeStruct.member2, 2);
   expectEquals(largeStruct.member3, 3);
