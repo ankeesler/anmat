@@ -21,13 +21,13 @@
 // Memory Management
 
 // Allocate a vector.
-AnmatStatus_t ANMAT_VectorAlloc(AnmatVector_t *vector,
+AnmatStatus_t anmatVectorAlloc(AnmatVector_t *vector,
                                 uint32_t count)
 {
   AnmatStatus_t status = ANMAT_BAD_ARG;
 
   if (count) {
-    vector->data = (double *)ANMAT_HeapAlloc(count * sizeof(double));
+    vector->data = (double *)heapAlloc(count * sizeof(double));
     status = (vector->data ? ANMAT_SUCCESS : ANMAT_MEM_ERR);
     vector->count = count;
   }
@@ -36,17 +36,17 @@ AnmatStatus_t ANMAT_VectorAlloc(AnmatVector_t *vector,
 }
 
 // Free a vector.
-void ANMAT_VectorFree(AnmatVector_t *vector)
+void anmatVectorFree(AnmatVector_t *vector)
 {
   if (vector->data) {
-    ANMAT_HeapFree(vector->data);
+    heapFree(vector->data);
   }
 }
 
 // -----------------------------------------------------------------------------
 // Elementary Operations
 
-double ANMAT_StatAverage(AnmatVector_t *vector)
+double anmatStatAverage(AnmatVector_t *vector)
 {
   double total = 0;
   uint32_t valueI;

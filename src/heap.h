@@ -16,23 +16,23 @@
 
 // Initialize the heap.
 // Note that the heap is automagically initliazed
-// with the first call to ANMAT_HeapAlloc.
-void ANMAT_HeapInit(void);
+// with the first call to heapAlloc.
+void heapInit(void);
 
 // Allocate bytes.
 // Returns NULL on failure.
 // The heap is automagically initialized the first time this is called.
 // Not thread safe.
-void *ANMAT_HeapAlloc(uint32_t count);
+void *heapAlloc(uint32_t count);
 
 // Free memory.
 // Not thread safe.
-void ANMAT_HeapFree(void *memory);
+void heapFree(void *memory);
 
 // The number of free bytes in the heap.
 // Useful for debugging.
-extern uint32_t freeHeapBytes;
+extern uint32_t heapFreeBytesCount;
 
 // Print the heap.
 // Useful for debugging.
-void ANMAT_HeapPrint(FILE *stream);
+void heapPrint(FILE *stream);

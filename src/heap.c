@@ -45,12 +45,12 @@ static uint8_t refCounts[REF_COUNTS_SIZE + 1];
 
 // We also keep track of free bytes for debugging/testing purposes.
 
-uint32_t freeHeapBytes = HEAP_SIZE;
+uint32_t heapFreeBytesCount = HEAP_SIZE;
 
 // -----------------------------------------------------------------------------
 // API
 
-void ANMAT_HeapInit(void)
+void heapInit(void)
 {
   uint8_t *refCount = &refCounts[0];
 
@@ -58,7 +58,7 @@ void ANMAT_HeapInit(void)
     *refCount++ = 0x00;
   }
 
-  freeHeapBytes = HEAP_SIZE;
+  heapFreeBytesCount = HEAP_SIZE;
 }
 
 static void markRefCounts(uint8_t *alloc, uint32_t count)
@@ -67,12 +67,12 @@ static void markRefCounts(uint8_t *alloc, uint32_t count)
   uint8_t *refCount       = &refCounts[heapOffset >> 3];
   uint16_t refCountsMask  = BIT(heapOffset & 0x7);
   
-  note("ANMAT_HeapAlloc: marking heap from 0x%p to 0x%p\n",
+  note("heapAlloc: marking heap from 0x%p to 0x%p\n",
        alloc, alloc + count);
 
   while (count --) {
     *refCount |= refCountsMask;
-    freeHeapBytes -= 1;
+    heapFreeBytesCount -= 1;
 
     if ((refCountsMask <<= 1) == BIT(8)) {
       refCount ++;
@@ -83,10 +83,10 @@ static void markRefCounts(uint8_t *alloc, uint32_t count)
   // Mark an extra '0' bit for the end of this allocation.
   // This bit should already be cleared...
   *refCount &= ~refCountsMask;
-  freeHeapBytes -= 1;
+  heapFreeBytesCount -= 1;
 }
 
-void *ANMAT_HeapAlloc(uint32_t count)
+void *heapAlloc(uint32_t count)
 {
   uint8_t *alloc = NULL, *heapPos = NULL, *refCount = NULL;
   uint32_t  bitI;
@@ -94,11 +94,11 @@ void *ANMAT_HeapAlloc(uint32_t count)
   static bool heapInitialized = false;
 
   if (!heapInitialized) {
-    ANMAT_HeapInit();
+    heapInit();
     heapInitialized = true;
   }
 
-  note("ANMAT_HeapAlloc: allocating %d bytes\n", count + 1); // alloc byte
+  note("heapAlloc: allocating %d bytes\n", count + 1); // alloc byte
 
   if (count) {
     for (refCount = refCounts; refCount < REF_COUNTS_END; refCount++) {
@@ -128,7 +128,7 @@ void *ANMAT_HeapAlloc(uint32_t count)
   return alloc;
 }
 
-void ANMAT_HeapFree(void *memory)
+void heapFree(void *memory)
 {
   uint8_t *alloc          = (uint8_t *)memory; // stupid compiler grumble...
   long heapOffset         = alloc - &datHeapDoe[0];
@@ -138,18 +138,18 @@ void ANMAT_HeapFree(void *memory)
   if (alloc >= &datHeapDoe[0] && alloc < &datHeapDoe[HEAP_SIZE]) {
     while (refCounts[refCountsIndex] & refCountsMask) {
       refCounts[refCountsIndex] &= ~refCountsMask;
-      freeHeapBytes ++;
+      heapFreeBytesCount ++;
 
       if ((refCountsMask <<= 1) == BIT(8)) {
         refCountsIndex ++;
         refCountsMask = BIT(0);
       }
     }
-    freeHeapBytes ++; // for the extra '0' bit at the end of the allocation
+    heapFreeBytesCount ++; // for the extra '0' bit at the end of the allocation
   }
 }
 
-void ANMAT_HeapPrint(FILE *stream)
+void heapPrint(FILE *stream)
 {
   uint8_t *refCount, *alloc;
   uint32_t refCountMask;

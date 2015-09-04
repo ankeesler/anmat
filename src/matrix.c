@@ -44,9 +44,9 @@ static inline double dotProduct(double *u, double *v, uint32_t length)
 // -----------------------------------------------------------------------------
 // Memory Management
 
-AnmatStatus_t ANMAT_MatrixAlloc(AnmatMatrix_t *matrix,
-                                uint32_t rows,
-                                uint32_t cols)
+AnmatStatus_t anmatMatrixAlloc(AnmatMatrix_t *matrix,
+                               uint32_t rows,
+                               uint32_t cols)
 {
   AnmatStatus_t status = ANMAT_BAD_ARG;
   uint32_t rowI, colI;
@@ -56,16 +56,16 @@ AnmatStatus_t ANMAT_MatrixAlloc(AnmatMatrix_t *matrix,
 
     matrix->rows = rows;
     matrix->cols = cols;
-    matrix->data = (double **)ANMAT_HeapAlloc(rows * sizeof(double *));
+    matrix->data = (double **)heapAlloc(rows * sizeof(double *));
     if (!matrix->data) {
       status = ANMAT_MEM_ERR;
     }
 
     for (rowI = 0; rowI < rows && status == ANMAT_SUCCESS; rowI ++) {
-      matrix->data[rowI] = (double *)ANMAT_HeapAlloc(cols * sizeof(double));
+      matrix->data[rowI] = (double *)heapAlloc(cols * sizeof(double));
       if (!matrix->data[rowI]) {
         status = ANMAT_MEM_ERR;
-        ANMAT_MatrixFree(matrix);
+        anmatMatrixFree(matrix);
       } else {
         FOR_COL(matrix, colI) {
           matrix->data[rowI][colI] = 0;
@@ -77,40 +77,40 @@ AnmatStatus_t ANMAT_MatrixAlloc(AnmatMatrix_t *matrix,
   return status;
 }
 
-void ANMAT_MatrixFree(AnmatMatrix_t *matrix)
+void anmatMatrixFree(AnmatMatrix_t *matrix)
 {
   uint32_t rowI;
 
   for (rowI = 0; rowI < matrix->rows; rowI ++) {
     if (matrix->data[rowI]) {
-      ANMAT_HeapFree(matrix->data[rowI]);
+      heapFree(matrix->data[rowI]);
     }
   }
 
   if (matrix->data) {
-    ANMAT_HeapFree(matrix->data);
+    heapFree(matrix->data);
   }
 }
 
 // -----------------------------------------------------------------------------
 // Elementary operations
 
-bool ANMAT_MatrixEquals(AnmatMatrix_t *matrixA,
-                        AnmatMatrix_t *matrixB)
+bool anmatMatrixEquals(AnmatMatrix_t *matrixA,
+                       AnmatMatrix_t *matrixB)
 {
   uint32_t rowI, colI;
 
   if (!dimensionsAreEqual(matrixA, matrixB)) {
-    note("ANMAT_MatrixEquals: dimensions are not equal.\n");
+    note("anmatMatrixEquals: dimensions are not equal.\n");
     return false;
   }
 
   FOR_ROW(matrixA, rowI) {
     FOR_COL(matrixA, colI) {
-      if (!ANMAT_UtilNeighborhood(matrixA->data[rowI][colI],
-                                  matrixB->data[rowI][colI],
-                                  1e-6)) {
-        note("ANMAT_MatrixEquals: values are not equal: ");
+      if (!anmatUtilNeighborhood(matrixA->data[rowI][colI],
+                                 matrixB->data[rowI][colI],
+                                 1e-6)) {
+        note("anmatMatrixEquals: values are not equal: ");
         note("(matrixA->data[%d][%d] = %lf) != (matrixB[%d][%d] = %lf)\n",
              rowI, colI, matrixA->data[rowI][colI],
              rowI, colI, matrixB->data[rowI][colI]);
@@ -146,23 +146,23 @@ static AnmatStatus_t addOrSubtractMatrices(AnmatMatrix_t *matrixA,
   return status;
 }
 
-AnmatStatus_t ANMAT_MatrixAdd(AnmatMatrix_t *matrixA,
-                              AnmatMatrix_t *matrixB,
-                              AnmatMatrix_t *matrixC)
+AnmatStatus_t anmatMatrixAdd(AnmatMatrix_t *matrixA,
+                             AnmatMatrix_t *matrixB,
+                             AnmatMatrix_t *matrixC)
 {
   return addOrSubtractMatrices(matrixA, matrixB, matrixC, true); // add?
 }
 
-AnmatStatus_t ANMAT_MatrixSubtract(AnmatMatrix_t *matrixA,
-                                   AnmatMatrix_t *matrixB,
-                                   AnmatMatrix_t *matrixC)
+AnmatStatus_t anmatMatrixSubtract(AnmatMatrix_t *matrixA,
+                                  AnmatMatrix_t *matrixB,
+                                  AnmatMatrix_t *matrixC)
 {
   return addOrSubtractMatrices(matrixA, matrixB, matrixC, false); // add?
 }
 
-AnmatStatus_t ANMAT_MatrixMultiply(AnmatMatrix_t *matrixA,
-                                   AnmatMatrix_t *matrixB,
-                                   AnmatMatrix_t *matrixC)
+AnmatStatus_t anmatMatrixMultiply(AnmatMatrix_t *matrixA,
+                                  AnmatMatrix_t *matrixB,
+                                  AnmatMatrix_t *matrixC)
 {
   AnmatStatus_t status = ANMAT_BAD_ARG;
   AnmatMatrix_t matrixBT;
@@ -171,9 +171,9 @@ AnmatStatus_t ANMAT_MatrixMultiply(AnmatMatrix_t *matrixA,
   if (matrixA->cols == matrixB->rows
       && matrixC->rows == matrixA->rows
       && matrixC->cols == matrixB->cols) {
-    status = ANMAT_MatrixAlloc(&matrixBT, matrixB->cols, matrixB->rows);
+    status = anmatMatrixAlloc(&matrixBT, matrixB->cols, matrixB->rows);
     if (status == ANMAT_SUCCESS) {
-      status = ANMAT_MatrixTranspose(matrixB, &matrixBT);
+      status = anmatMatrixTranspose(matrixB, &matrixBT);
       if (status == ANMAT_SUCCESS) {
         FOR_ROW(matrixC, rowI) {
           FOR_COL(matrixC, colI) {
@@ -183,7 +183,7 @@ AnmatStatus_t ANMAT_MatrixMultiply(AnmatMatrix_t *matrixA,
           }
         }
       }
-      ANMAT_MatrixFree(&matrixBT);
+      anmatMatrixFree(&matrixBT);
     }
   }
 
@@ -193,8 +193,8 @@ AnmatStatus_t ANMAT_MatrixMultiply(AnmatMatrix_t *matrixA,
 // -----------------------------------------------------------------------------
 // Matrix Operations
 
-AnmatStatus_t ANMAT_MatrixTranspose(AnmatMatrix_t *matrixA,
-                                    AnmatMatrix_t *matrixB)
+AnmatStatus_t anmatMatrixTranspose(AnmatMatrix_t *matrixA,
+                                   AnmatMatrix_t *matrixB)
 {
   AnmatStatus_t status = ANMAT_BAD_ARG;
   uint32_t rowI, colI;
@@ -214,8 +214,8 @@ AnmatStatus_t ANMAT_MatrixTranspose(AnmatMatrix_t *matrixA,
 // -----------------------------------------------------------------------------
 // I/O
 
-AnmatStatus_t ANMAT_MatrixPrint(AnmatMatrix_t *matrix,
-                                FILE *stream)
+AnmatStatus_t anmatMatrixPrint(AnmatMatrix_t *matrix,
+                               FILE *stream)
 {
   AnmatStatus_t status = ANMAT_SUCCESS;
   uint32_t rowI, colI;
@@ -240,9 +240,9 @@ static void appendValue(double value,
                         uint32_t *listSize)
 {
   if (*pos == *listSize) {
-    double *newList = (double *)ANMAT_HeapAlloc((*listSize <<= 1) * sizeof(double));
+    double *newList = (double *)heapAlloc((*listSize <<= 1) * sizeof(double));
     memcpy(newList, *list, *pos * sizeof(double));
-    ANMAT_HeapFree(*list);
+    heapFree(*list);
     *list = newList;
   }
 
@@ -250,8 +250,8 @@ static void appendValue(double value,
   (*pos) += 1;
 }
 
-AnmatStatus_t ANMAT_MatrixScan(AnmatMatrix_t *matrix,
-                               FILE *stream)
+AnmatStatus_t anmatMatrixScan(AnmatMatrix_t *matrix,
+                              FILE *stream)
 {
   AnmatStatus_t status = ANMAT_SUCCESS;
   uint32_t pos, listSize;
@@ -261,7 +261,7 @@ AnmatStatus_t ANMAT_MatrixScan(AnmatMatrix_t *matrix,
   // Initialize the list.
   listSize = 5;
   pos = 0;
-  list = ANMAT_HeapAlloc(listSize * sizeof(double));
+  list = heapAlloc(listSize * sizeof(double));
   if (!list) {
     status = ANMAT_MEM_ERR;
   }
@@ -299,7 +299,7 @@ AnmatStatus_t ANMAT_MatrixScan(AnmatMatrix_t *matrix,
   if (list) {
     if (status == ANMAT_SUCCESS) {
       rows = pos / cols;
-      status = ANMAT_MatrixAlloc(matrix, rows, cols);
+      status = anmatMatrixAlloc(matrix, rows, cols);
       if (status == ANMAT_SUCCESS) {
         uint32_t i = 0;
         FOR_ROW(matrix, rowI) {
@@ -309,7 +309,7 @@ AnmatStatus_t ANMAT_MatrixScan(AnmatMatrix_t *matrix,
         }
       }
     }
-    ANMAT_HeapFree(list);
+    heapFree(list);
   }
 
   return status;

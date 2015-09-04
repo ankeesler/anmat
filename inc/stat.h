@@ -24,23 +24,23 @@ typedef struct {
 // Memory Management
 
 // Allocate a vector.
-AnmatStatus_t ANMAT_VectorAlloc(AnmatVector_t *vector,
-                                uint32_t count);
+AnmatStatus_t anmatVectorAlloc(AnmatVector_t *vector,
+                               uint32_t count);
 
 // Free a vector.
-void ANMAT_VectorFree(AnmatVector_t *vector);
+void anmatVectorFree(AnmatVector_t *vector);
 
 // -----------------------------------------------------------------------------
 // Data Access
 
 // Get count.
-#define ANMAT_VectorCount(vector) ((vector)->count)
+#define anmatVectorCount(vector) ((vector)->count)
 
 // Get the n'th value in the data.
-#define ANMAT_VectorData(vector, n) ((vector)->data[n])
+#define anmatVectorData(vector, n) ((vector)->data[n])
 
 // -----------------------------------------------------------------------------
 // Elementary Operations
 
 // Calculate the average of the data in the vector.
-double ANMAT_StatAverage(AnmatVector_t *vector);
+double anmatStatAverage(AnmatVector_t *vector);
