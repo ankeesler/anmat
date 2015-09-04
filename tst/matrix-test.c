@@ -29,7 +29,7 @@ static int allocTest(void)
   AnmatMatrix_t matrix1, matrix2;
 
   // Heap should be fresh.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // No rows or cols is bad.
   expectEquals(anmatMatrixAlloc(&matrix1, 0, 0), ANMAT_BAD_ARG);
@@ -37,7 +37,7 @@ static int allocTest(void)
   expectEquals(anmatMatrixAlloc(&matrix1, 0, 1), ANMAT_BAD_ARG);
 
   // Still haven't touched the heap.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Rows and cols is good.
   expectEquals(anmatMatrixAlloc(&matrix1, 5, 5), ANMAT_SUCCESS);
@@ -54,7 +54,7 @@ static int allocTest(void)
   anmatMatrixFree(&matrix1);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Allocate two matrices.
   expectEquals(anmatMatrixAlloc(&matrix1, 3, 3), ANMAT_SUCCESS);
@@ -65,7 +65,7 @@ static int allocTest(void)
   anmatMatrixFree(&matrix2);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -75,7 +75,7 @@ static int dataTest(void)
   AnmatMatrix_t matrixA, matrixB;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Allocate.
   expectEquals(anmatMatrixAlloc(&matrixA, 6, 3), ANMAT_SUCCESS);
@@ -100,7 +100,7 @@ static int dataTest(void)
   anmatMatrixFree(&matrixB);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -110,7 +110,7 @@ static int elemOpTest(void)
   AnmatMatrix_t matrixA, matrixB, matrixC, matrixD, matrixE;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Allocate.
   expectEquals(anmatMatrixAlloc(&matrixA, 3, 4), ANMAT_SUCCESS);
@@ -180,7 +180,7 @@ static int elemOpTest(void)
   anmatMatrixFree(&matrixE);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -190,7 +190,7 @@ static int transposeTest(void)
   AnmatMatrix_t matrixA, matrixB, matrixC, matrixD;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Alloc.
   expectEquals(anmatMatrixAlloc(&matrixA, 2, 3), ANMAT_SUCCESS);
@@ -224,7 +224,7 @@ static int transposeTest(void)
   anmatMatrixFree(&matrixD);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -235,7 +235,7 @@ static int ioTest(void)
   uint32_t rowI, colI;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Alloc.
   expectEquals(anmatMatrixAlloc(&matrixA, 11, 11), ANMAT_SUCCESS);
@@ -282,7 +282,7 @@ static int ioTest(void)
   anmatMatrixFree(&matrixB);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }

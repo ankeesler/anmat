@@ -15,5 +15,5 @@
 
 #define HEAP_SIZE (1 << ANMAT_HEAP_SIZE_LOG)
 #define expectHeapSize(size) (expectEquals(heapFreeBytesCount, (size)))
-#define expectHeapEmpty()    (expectEquals(heapFreeBytesCount, 0))
-#define expectHeapFull()     (expectEquals(heapFreeBytesCount, HEAP_SIZE))
+#define expectHeapFull()     (expectEquals(heapFreeBytesCount, 0))
+#define expectHeapEmpty()    (expectEquals(heapFreeBytesCount, HEAP_SIZE))

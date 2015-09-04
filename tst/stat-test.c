@@ -19,7 +19,7 @@ static int allocTest(void)
   AnmatVector_t vector;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Cannot allocate vector of 0 length.
   expectEquals(anmatVectorAlloc(&vector, 0), ANMAT_BAD_ARG);
@@ -37,7 +37,7 @@ static int allocTest(void)
   anmatVectorFree(&vector);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -47,7 +47,7 @@ static int dataTest(void)
   AnmatVector_t vector;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
   
   // Alloc.
   expectEquals(anmatVectorAlloc(&vector, 5), ANMAT_SUCCESS);
@@ -73,7 +73,7 @@ static int dataTest(void)
   anmatVectorFree(&vector);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -83,7 +83,7 @@ static int averageTest(void)
   AnmatVector_t vector;
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
   
   // Alloc.
   expectEquals(anmatVectorAlloc(&vector, 5), ANMAT_SUCCESS);
@@ -114,7 +114,7 @@ static int averageTest(void)
   anmatVectorFree(&vector);
 
   // Heap should be full.
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }

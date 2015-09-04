@@ -19,14 +19,14 @@ static int doubleTest(void)
   double *pointers[2] = {NULL,NULL,};
 
   // At the beginning of allocation, we should have all of the bytes.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Can't allocate 0 bytes!
   pointers[0] = heapAlloc(0);
   expect(pointers[0] == NULL);
 
   // The number of free bytes should still be the total heap.
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Allocating 1 double (8 bytes) should be no problem.
   // The heap should automatically initialize itself the first time we alloc.
@@ -41,7 +41,7 @@ static int doubleTest(void)
 
   // If we free the memory, we should get back all of our bytes.
   heapFree(pointers[0]);
-  expectHeapFull();
+  expectHeapEmpty();
 
   // How about if we free one 16 byte chunk and one 24 byte chunk.
   pointers[0] = NULL;
@@ -59,7 +59,7 @@ static int doubleTest(void)
 
   // After we free the 16 byte chunk, we should be back to 0 bytes missing.
   heapFree(pointers[0]);
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -70,7 +70,7 @@ static int stressTest(void)
 
   // Initializing the heap should mean all the bytes are available.
   heapInit();
-  expectHeapFull();
+  expectHeapEmpty();
   
   // Let's allocate the whole heap with two chunks. One will be
   // (HEAP_SIZE / 4 - 1) bytes and the other will be
@@ -81,7 +81,7 @@ static int stressTest(void)
   expect(pointers[1] != NULL);
 
   // There should be no bytes left.
-  expectHeapEmpty();
+  expectHeapFull();
 
   // Therefore, we should not be able to allocate anymore.
   pointers[2] = (uint8_t *)heapAlloc(1);
@@ -99,7 +99,7 @@ static int stressTest(void)
 
   // Make sure when we free the second chunk, we have a full heap available.
   heapFree(pointers[1]);
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
@@ -170,7 +170,7 @@ static int arrayTest(void)
   int **matrix, i;
 
   heapInit();
-  expectHeapFull();
+  expectHeapEmpty();
 
   // Allocate room for 3 pointers.
   matrix = (int **)heapAlloc(3 * sizeof(int *));
@@ -199,7 +199,7 @@ static int arrayTest(void)
   
   // Free the pointers.
   heapFree(matrix);
-  expectHeapFull();
+  expectHeapEmpty();
 
   return 0;
 }
