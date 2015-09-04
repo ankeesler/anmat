@@ -17,3 +17,8 @@
 #define expectHeapSize(size) (expectEquals(heapFreeBytesCount, (size)))
 #define expectHeapFull()     (expectEquals(heapFreeBytesCount, 0))
 #define expectHeapEmpty()    (expectEquals(heapFreeBytesCount, HEAP_SIZE))
+
+// -----------------------------------------------------------------------------
+// Util
+
+#define expectNeighborhood(a, b, e) expect(anmatUtilNeighborhood(a, b, e))

@@ -58,17 +58,20 @@ inline bool anmatUtilNeighborhood(double a,
   return (anmatUtilAbs(a - b) <= epsilon);
 }
 
-// Find a raised to the power p.
-double anmatUtilPower(double a,
-                      unsigned int p)
+// Find base raised to the power.
+double anmatUtilPower(double base,
+                      int power)
 {
-  double value = 0;
+  double value = 1;
 
-  if (!p) {
-    value = 1;
-  } else if (p > 0) {
-    value = 1;
-    while (p --) { value *= a; }
+  if (anmatUtilNeighborhood(base, 0, ANMAT_EPSILON_DEFAULT) && power != 0) {
+    value = 0;
+  } else {
+    if (power > 0) {
+      while (power --) { value *= base; }
+    } else if (power < 0) {
+      while (power ++) { value /= base; }
+    }
   }
 
   return value;

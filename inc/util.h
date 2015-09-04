@@ -14,7 +14,7 @@
 #include "anmat.h"
 
 // -----------------------------------------------------------------------------
-// Elementary Memory Manipulation
+// Elementary Memory Memory Manipulation
 
 // Copy length bytes from source to destination.
 void anmatMemcpy(void *destination,
@@ -37,9 +37,9 @@ bool anmatUtilNeighborhood(double a,
                            double b,
                            double epsilon);
 
-// Find a raised to the power p.
-double anmatUtilPower(double a,
-                      unsigned int p);
+// Find base raised to the power.
+double anmatUtilPower(double base,
+                      int power);
 
 // Find the r'th root of a.
 double anmatUtilRoot(double a,

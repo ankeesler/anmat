@@ -11,6 +11,7 @@
 #include <unit-test.h>
 
 #include "util.h"
+#include "./test-util.h"
 
 static int utilTest(void)
 {
@@ -30,22 +31,34 @@ static int utilTest(void)
   expect(anmatUtilNeighborhood(-1, 2, 3));
   expect(anmatUtilNeighborhood(-1, 2, 3.1));
 
-  expectEquals(anmatUtilPower(1, 0), 1);
-  expectEquals(anmatUtilPower(1, 1), 1);
-  expectEquals(anmatUtilPower(1, 2), 1);
-  expectEquals(anmatUtilPower(1, 5), 1);
-  expectEquals(anmatUtilPower(0, 0), 1);
-  expectEquals(anmatUtilPower(0, 1), 0);
-  expectEquals(anmatUtilPower(0, 2), 0);
-  expectEquals(anmatUtilPower(0, 5), 0);
-  expectEquals(anmatUtilPower(3, 0), 1);
-  expectEquals(anmatUtilPower(3, 1), 3);
-  expectEquals(anmatUtilPower(3, 2), 9);
-  expectEquals(anmatUtilPower(3, 5), 243);
-  expectEquals(anmatUtilPower(1.5, 0), 1);
-  expectEquals(anmatUtilPower(1.5, 1), 1.5);
-  expectEquals(anmatUtilPower(1.5, 2), 2.25);
-  expectEquals(anmatUtilPower(1.5, 5), 7.59375);
+  return 0;
+}
+
+static int powerTest(void)
+{
+  expect(anmatUtilPower(1, 0) == 1);
+  expect(anmatUtilPower(1, 1) == 1);
+  expect(anmatUtilPower(1, 2) == 1);
+  expect(anmatUtilPower(1, 5) == 1);
+  expect(anmatUtilPower(1, -1) == 1);
+
+  expect(anmatUtilPower(0, 0) == 1);
+  expect(anmatUtilPower(0, 1) == 0);
+  expect(anmatUtilPower(0, 2) == 0);
+  expect(anmatUtilPower(0, 5) == 0);
+  expect(anmatUtilPower(0, -1) == 0);
+
+  expect(anmatUtilPower(3, 0) == 1);
+  expect(anmatUtilPower(3, 1) == 3);
+  expect(anmatUtilPower(3, 2) == 9);
+  expect(anmatUtilPower(3, 5) == 243);
+  expectNeighborhood(anmatUtilPower(3, -1), .3333333, 1e-6);
+
+  expect(anmatUtilPower(1.5, 0) == 1);
+  expect(anmatUtilPower(1.5, 1) == 1.5);
+  expect(anmatUtilPower(1.5, 2) == 2.25);
+  expect(anmatUtilPower(1.5, 5) == 7.59375);
+  expectNeighborhood(anmatUtilPower(1.5, -1), .666666, 1e-6);
 
   return 0;
 }
@@ -83,6 +96,7 @@ int main(void)
   announce();
 
   run(utilTest);
+  run(powerTest);
   run(memTest);
 
   return 0;

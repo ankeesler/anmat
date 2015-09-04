@@ -26,6 +26,10 @@ typedef enum {
 
 } AnmatStatus_t;
 
+// Default epsilon definition.
+// TODO: what should this really be?
+#define ANMAT_EPSILON_DEFAULT (1e-6)
+
 // Utilities API.
 #include "util.h"
 
