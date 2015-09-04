@@ -37,23 +37,23 @@ void anmatMemcpy(void *destination,
 // Elementary Math Functions
 
 // Find the max of two values.
-inline double anmatUtilMax(const double a,
-                           const double b)
+inline double anmatUtilMax(double a,
+                           double b)
 {
   return (a > b ? a : b);
 }
 
 // Find the absolute value of a number.
-inline double anmatUtilAbs(const double a)
+inline double anmatUtilAbs(double a)
 {
   return (a > 0 ? a : (-1 * a));
 }
 
 // Find out whether two floating point values are within a certain amount of
 // each other.
-inline bool anmatUtilNeighborhood(const double a,
-                                  const double b,
-                                  const double epsilon)
+inline bool anmatUtilNeighborhood(double a,
+                                  double b,
+                                  double epsilon)
 {
   return (anmatUtilAbs(a - b) <= epsilon);
 }

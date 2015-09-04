@@ -25,17 +25,17 @@ void anmatMemcpy(void *destination,
 // Elementary Math Functions
 
 // Find the max of two values.
-double anmatUtilMax(const double a,
-                    const double b);
+double anmatUtilMax(double a,
+                    double b);
 
 // Find the absolute value of a number.
-double anmatUtilAbs(const double a);
+double anmatUtilAbs(double a);
 
 // Find out whether two floating point values are within a certain amount of
 // each other.
-bool anmatUtilNeighborhood(const double a,
-                           const double b,
-                           const double epsilon);
+bool anmatUtilNeighborhood(double a,
+                           double b,
+                           double epsilon);
 
 // Find a raised to the power p.
 double anmatUtilPower(double a,
