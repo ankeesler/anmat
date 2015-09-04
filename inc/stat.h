@@ -8,6 +8,9 @@
 // Statistics API.
 //
 
+#ifndef __STAT_H__
+#define __STAT_H__
+
 #include <string.h> // memset()
 
 #include "anmat.h"
@@ -44,3 +47,5 @@ void anmatVectorFree(AnmatVector_t *vector);
 
 // Calculate the average of the data in the vector.
 double anmatStatAverage(AnmatVector_t *vector);
+
+#endif /* __STAT_H__ */
