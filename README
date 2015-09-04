@@ -1,6 +1,12 @@
 Math is cool.
 
+See master header int/anmat.h for all public includes.
+
 Each public module has:
   - a source file found in src/<module>.c
   - an API header file found in inc/<module>.h
   - a unit test found in tst/<module>-test.c
+
+Each public API is:
+  - prepended with "anmat"
+  - marked with the name of the module (i.e., Matrix)
