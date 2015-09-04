@@ -6,7 +6,7 @@ all: test
 #
 
 CC=clang
-CFLAGS=-Wall -Werror -g -O0
+CFLAGS=-Wall -Werror -g -O0 -MD
 
 BUILD_DIR=build
 BUILD_DIR_CREATED=$(BUILD_DIR)/tuna
@@ -22,6 +22,8 @@ COMMON_FILES=$(SRC_DIR)/heap.c $(SRC_DIR)/util.c
 #
 # BUILD
 #
+
+-include $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.d, $(SRC_DIR)/*.c)
 
 $(BUILD_DIR_CREATED):
 	mkdir $(@D)
