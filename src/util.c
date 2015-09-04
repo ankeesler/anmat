@@ -64,6 +64,13 @@ double anmatUtilPower(double a,
 {
   double value = 0;
 
+  if (!p) {
+    value = 1;
+  } else if (p > 0) {
+    value = 1;
+    while (p --) { value *= a; }
+  }
+
   return value;
 }
 
