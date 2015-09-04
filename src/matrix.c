@@ -9,10 +9,7 @@
 //
 
 #include "matrix.h"
-#include "util.h"
 #include "src/heap.h"
-
-#include <string.h> // memset(), memcpy()
 
 // -----------------------------------------------------------------------------
 // Private Functionality

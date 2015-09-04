@@ -8,8 +8,7 @@
 // Heap management for anmat library.
 //
 
-#include <stdint.h>
-#include <stdio.h>
+#include "anmat.h"
 
 // The log base 2 size of the heap.
 #define ANMAT_HEAP_SIZE_LOG (12)

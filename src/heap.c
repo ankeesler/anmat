@@ -10,10 +10,6 @@
 
 #include "heap.h"
 
-#include <stdlib.h>  // NULL
-#include <stdint.h>  // uint8_t, uint16_t, uint32_t
-#include <stdbool.h> // bool, true, false
-
 //#define HEAP_DEBUG
 #ifdef HEAP_DEBUG
   #define note(...) printf(__VA_ARGS__), fflush(0);

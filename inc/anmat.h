@@ -9,6 +9,13 @@
 #ifndef __ANMAT_H__
 #define __ANMAT_H__
 
+// Standard C definitions.
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 // Status codes.
 typedef enum {
   // Success.

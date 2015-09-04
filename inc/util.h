@@ -11,8 +11,7 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "anmat.h"
 
 // -----------------------------------------------------------------------------
 // Elementary Math Functions
