@@ -46,7 +46,7 @@ double anmatUtilMax(double a,
 // Find the absolute value of a number.
 double anmatUtilAbs(double a);
 
-// Find out whether two floating point values are within a certain amount of
+// Find out whether a and b are within a certain amount of
 // each other.
 bool anmatUtilNeighborhood(double a,
                            double b,
@@ -58,6 +58,7 @@ double anmatUtilPower(double base,
 
 // Find the r'th root of a.
 double anmatUtilRoot(double a,
-                     unsigned int r);
+                     unsigned int r,
+                     double epsilon);
 
 #endif /* __UTIL_H__ */

@@ -63,6 +63,41 @@ static int powerTest(void)
   return 0;
 }
 
+static int rootTest(void)
+{
+  expectNeighborhood(anmatUtilRoot(4, 2, ANMAT_EPSILON_DEFAULT),
+                     2,
+                     ANMAT_EPSILON_DEFAULT);
+  expectNeighborhood(anmatUtilRoot(9, 2, ANMAT_EPSILON_DEFAULT),
+                     3,
+                     ANMAT_EPSILON_DEFAULT);
+
+  expectNeighborhood(anmatUtilRoot(1, 2, ANMAT_EPSILON_DEFAULT),
+                     1,
+                     ANMAT_EPSILON_DEFAULT);
+  expectNeighborhood(anmatUtilRoot(1, 3, ANMAT_EPSILON_DEFAULT),
+                     1,
+                     ANMAT_EPSILON_DEFAULT);
+
+  expectNeighborhood(anmatUtilRoot(.5, 2, ANMAT_EPSILON_DEFAULT),
+                     0.7071067811865476,
+                     ANMAT_EPSILON_DEFAULT);
+
+  expectNeighborhood(anmatUtilRoot(.25, 2, ANMAT_EPSILON_DEFAULT),
+                     0.5,
+                     ANMAT_EPSILON_DEFAULT);
+
+  expectNeighborhood(anmatUtilRoot(256, 2, ANMAT_EPSILON_DEFAULT),
+                     16,
+                     ANMAT_EPSILON_DEFAULT);
+
+  expectNeighborhood(anmatUtilRoot(32, 5, ANMAT_EPSILON_DEFAULT),
+                     2,
+                     ANMAT_EPSILON_DEFAULT);
+
+  return 0;
+}
+
 static int memTest(void)
 {
   unsigned char buffer1[10] = {1,2,3,4,5,6,7,8,9,10,}, buffer2[10] = {0,};
@@ -110,6 +145,7 @@ int main(void)
 
   run(utilTest);
   run(powerTest);
+  run(rootTest);
   run(memTest);
   run(ieee754Test);
 

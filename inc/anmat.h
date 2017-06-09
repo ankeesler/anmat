@@ -31,6 +31,9 @@ typedef enum {
 // TODO: what should this really be?
 #define ANMAT_EPSILON_DEFAULT (1e-6)
 
+// How many times the square root algorithm should iterate.
+#define ANMAT_ROOT_MAX_ITERATIONS 32
+
 // Utilities API.
 #include "util.h"
 

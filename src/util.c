@@ -10,6 +10,13 @@
 
 #include "util.h"
 
+//#define UTIL_DEBUG
+#ifdef UTIL_DEBUG
+  #define note(...) printf(__VA_ARGS__), fflush(0);
+#else
+  #define note(...)
+#endif
+
 // -----------------------------------------------------------------------------
 // Elementary Memory Manipulation
 
@@ -78,11 +85,44 @@ double anmatUtilPower(double base,
 }
 
 // Find the r'th root of a.
-double anmatUtilRoot(double a,
-                     unsigned int r)
+double anmatUtilRoot(double aReal,
+                     unsigned int root,
+                     double epsilon)
 {
-  // We are trying to find x in x^r = a.
-  double x = 0;
+  // We are trying to find the positive root of x^root - aReal = 0.
+  // Let's use Newton's Method.
+  double baseGuess, aGuess, y, m, x, b;
+  unsigned int tries;
 
-  return x;
+  // TODO: what should this really be?
+  baseGuess = aReal / 2.0;
+
+  tries = ANMAT_ROOT_MAX_ITERATIONS;
+
+  note("Finding the %d'th root of %lf within %lf and with %d tries\n",
+       root, aReal, epsilon, tries);
+
+  while (tries--) {
+    aGuess = anmatUtilPower(baseGuess, root) - aReal;
+    if (anmatUtilNeighborhood(aGuess, 0, epsilon)) {
+      break;
+    }
+
+    // The derivative of our function is root * x^(root - 1).
+    m = root * anmatUtilPower(baseGuess, root - 1);
+    y = aGuess;
+    x = baseGuess;
+
+    // Find b in y = mx + b.
+    b = y - (m * x);
+
+    // Find the root of y = mx + b.
+    x = -b / m;
+
+    baseGuess = x;
+    note("  aGuess = %lf, y = %lf, m = %lf, x = %lf, b = %lf, baseGuess = %lf\n",
+         aGuess, y, m, x, b, baseGuess);
+  }
+
+  return baseGuess;
 }
